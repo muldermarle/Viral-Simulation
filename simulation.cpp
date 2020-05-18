@@ -19,6 +19,7 @@
 #include <emscripten.h>
 #include <math.h>
 
+
 namespace corsim
 {
 
@@ -74,18 +75,11 @@ void Simulation::tick()
         }
     }
 
-    int numberInfected = 0;
+    RegularMovement regularMovement;
+    LockdownMovement lockdownMovement;
 
-    for(Subject& s : _subjects)
-    {
-        s.set_x(s.x() + s.dx() * dt);
-        s.set_y(s.y() + s.dy() * dt);
-
-        if(s.infected())
-        {
-            numberInfected++;
-        }
-    }
+    int numberInfected = RegularMovement.move(dt, _subjects, counter/30);
+    int numberInfected = lockdownMovement.move(dt, _subjects, counter/30);
 
     if(counter % 30 == 0)
     {
